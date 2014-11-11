@@ -1,0 +1,21 @@
+[root]
+name = "circles"
+version = "0.0.1"
+dependencies = [
+ "sdl2 0.0.1-alpha.1 (git+https://github.com/AngryLawyer/rust-sdl2)",
+ "sdl2_gfx 0.0.1 (git+https://github.com/andelf/rust-sdl2_gfx.git)",
+]
+
+[[package]]
+name = "sdl2"
+version = "0.0.1-alpha.1"
+source = "git+https://github.com/AngryLawyer/rust-sdl2#93cc0d4184b3f66dbced0e46798dc3800717cb3b"
+
+[[package]]
+name = "sdl2_gfx"
+version = "0.0.1"
+source = "git+https://github.com/andelf/rust-sdl2_gfx.git#820a0ba123eaa9a0334b1ea305a6025263469847"
+dependencies = [
+ "sdl2 0.0.1-alpha.1 (git+https://github.com/AngryLawyer/rust-sdl2)",
+]
+

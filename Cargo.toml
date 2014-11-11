@@ -1,0 +1,11 @@
+[package]
+
+name = "circles"
+version = "0.0.1"
+authors = ["Ted Dobyns <ted.ajax@gmail.com>"]
+
+[dependencies.sdl2]
+git = "https://github.com/AngryLawyer/rust-sdl2"
+
+[dependencies.sdl2_gfx]
+git = "https://github.com/andelf/rust-sdl2_gfx.git"
