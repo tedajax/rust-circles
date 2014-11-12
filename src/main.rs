@@ -9,6 +9,27 @@ use ajxmath::Vec2;
 mod ajxmath;
 mod physics;
 
+fn render_body(&body: &physics::Body, &ref renderer: &sdl2::render::Renderer) {
+    let pos = body.position;
+    let x = pos.x as i16;
+    let y = pos.y as i16;
+    match body.shape {
+        physics::Circle(radius) => {
+            let _ = renderer.circle(x, y, radius as i16, sdl2::pixels::RGB(255, 255, 0));
+        },
+        physics::Rectangle(width, height) => {
+            let w = width as i16;
+            let h = height as i16;
+            let _ = renderer.rectangle(x, y, x + w, y + h, sdl2::pixels::RGB(0, 255, 255));
+        },
+        physics::Line(length) => {
+            let l = (length / 2_f32) as i16;
+            let _ = renderer.line(x - l, y, x + l, y, sdl2::pixels::RGB(0, 255, 0));
+        },
+        _ => {}
+    }
+}
+
 pub fn main() {
     sdl2::init(sdl2::INIT_VIDEO);
 
@@ -22,7 +43,10 @@ pub fn main() {
         Err(err) => panic!(format!("failed to create renderer: {}", err))
     };
 
-    let mut pos = Vec2::new(0_f32, 0_f32);
+    let mut world = physics::World::new(64);
+    world.add_body(Vec2::new(200_f32, 100_f32), physics::Circle(32_f32), false);
+    world.add_body(Vec2::new(300_f32, 400_f32), physics::Rectangle(100_f32, 50_f32), true);
+    world.add_body(Vec2::new(400_f32, 300_f32), physics::Line(50_f32), true);
 
     'main : loop {
         'event : loop {
@@ -41,8 +65,15 @@ pub fn main() {
         let _ = renderer.set_draw_color(sdl2::pixels::RGB(32, 32, 32));
         let _ = renderer.clear();
 
-        let _ = renderer.circle(pos.x as i16, pos.y as i16, 25_i16, sdl2::pixels::RGB(255, 255, 0));
-        pos = pos + Vec2::one();
+        //let _ = renderer.circle(pos.x as i16, pos.y as i16, 25_i16, sdl2::pixels::RGB(255, 255, 0));
+
+
+
+        world.update(0.0016667_f32);
+
+        for body in world.objects.iter() {
+            render_body(body, &renderer);
+        }
 
         renderer.present();
     }
