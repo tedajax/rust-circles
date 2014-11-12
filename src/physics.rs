@@ -1,4 +1,4 @@
-use ajxmath::Vec2;
+use ajxmath::{Vec2, Rect, Circle};
 
 pub struct Body {
     pub id: int,
@@ -32,6 +32,25 @@ impl Body {
 
     pub fn add_shape(&mut self, shape: Shape) {
         self.shape = shape;
+    }
+
+    pub fn get_bounds(&self) -> Rect {
+        match self.shape {
+            Circle(radius) => {
+                let r = radius;
+                let d = r * 2_f32 + 1_f32;
+                let tl = Vec2::new(self.position.x - r, self.position.y - r);
+                Rect::new(tl, d, d)
+            },
+            Rectangle(width, height) => {
+                Rect::new(self.position, width, height)
+            },
+            Line(length) => {
+                let halfL = length / 2_f32;
+                Rect::new(Vec2::new(self.position.x - halfL, self.position.y), length, 1_f32)
+            },
+            _ => Rect::new(Vec2::zero(), 0_f32, 0_f32),
+        }
     }
 }
 

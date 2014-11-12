@@ -86,3 +86,65 @@ impl Neg<Vec2> for Vec2 {
         }
     }
 }
+
+#[deriving(Show, Clone, PartialEq)]
+pub struct Rect {
+    pub position: Vec2,
+    pub width: f32,
+    pub height: f32,
+}
+
+impl Rect {
+    pub fn new(pos: Vec2, w: f32, h: f32) -> Rect {
+        Rect {
+            position: pos,
+            width: w,
+            height: h,
+        }
+    }
+
+    pub fn left(&self) -> f32 {
+        self.position.x
+    }
+
+    pub fn right(&self) -> f32 {
+        self.position.x + self.width
+    }
+
+    pub fn top(&self) -> f32 {
+        self.position.y
+    }
+
+    pub fn bottom(&self) -> f32 {
+        self.position.y + self.height
+    }
+
+    pub fn contains_point(&self, point: Vec2) -> bool {
+        point.x >= self.left() &&
+        point.x <= self.right() &&
+        point.y >= self.top() &&
+        point.y <= self.bottom()
+    }
+
+    pub fn intersects(&self, other: Rect) -> bool {
+        self.right() >= other.left() && self.left() <= other.right() &&
+        self.bottom() >= other.top() && self.top() <= other.bottom()
+    }
+}
+
+#[deriving(Show, Clone, PartialEq)]
+pub struct Circle {
+    position: Vec2,
+    radius: f32
+}
+
+impl Circle {
+    pub fn new(pos: Vec2, r: f32) -> Circle {
+        Circle {
+            position: pos,
+            radius: r,
+        }
+    }
+
+
+}
