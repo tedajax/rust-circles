@@ -4,30 +4,10 @@ pub struct Vec2 {
     pub y: f32,
 }
 
-#[deriving(PartialEq, Clone, Show)]
-pub struct Vec2i {
-    x: i32,
-    y: i32,
-}
-
 #[allow(dead_code)]
 impl Vec2 {
     pub fn new(x: f32, y: f32) -> Vec2 {
         Vec2 { x: x, y: y }
-    }
-
-    pub fn from_ivec(vec: Vec2i) -> Vec2 {
-        Vec2 {
-            x: vec.x as f32,
-            y: vec.y as f32,
-        }
-    }
-
-    pub fn to_ivec(&self) -> Vec2i {
-        Vec2i {
-            x: self.x as i32,
-            y: self.y as i32,
-        }
     }
 
     pub fn zero() -> Vec2 {

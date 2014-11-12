@@ -14,7 +14,7 @@ source = "git+https://github.com/AngryLawyer/rust-sdl2#93cc0d4184b3f66dbced0e467
 [[package]]
 name = "sdl2_gfx"
 version = "0.0.1"
-source = "git+https://github.com/andelf/rust-sdl2_gfx.git#820a0ba123eaa9a0334b1ea305a6025263469847"
+source = "git+https://github.com/andelf/rust-sdl2_gfx.git#bcae5a3c0f75c3fb133e79101fa273c53041ee0e"
 dependencies = [
  "sdl2 0.0.1-alpha.1 (git+https://github.com/AngryLawyer/rust-sdl2)",
 ]

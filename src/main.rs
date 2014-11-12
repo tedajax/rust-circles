@@ -7,6 +7,7 @@ use sdl2_gfx::primitives::DrawRenderer;
 use ajxmath::Vec2;
 
 mod ajxmath;
+mod physics;
 
 pub fn main() {
     sdl2::init(sdl2::INIT_VIDEO);
@@ -40,12 +41,8 @@ pub fn main() {
         let _ = renderer.set_draw_color(sdl2::pixels::RGB(32, 32, 32));
         let _ = renderer.clear();
 
-        let x = pos.x as i16;
-        let y = pos.y as i16;
-        let _ = renderer.circle(x, y, 25_i16, sdl2::pixels::RGB(255, 255, 0));
+        let _ = renderer.circle(pos.x as i16, pos.y as i16, 25_i16, sdl2::pixels::RGB(255, 255, 0));
         pos = pos + Vec2::one();
-
-        let _ = renderer.line(0, 0, 100, 50, sdl2::pixels::RGB(255, 0, 0));
 
         renderer.present();
     }
