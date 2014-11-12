@@ -49,7 +49,7 @@ impl World {
             objects: Vec::new(),
             current_id: 1,
             px_to_meters: px_to_meters,
-            gravity: Vec2::new(0_f32, 1000_f32 * px_to_meters as f32),
+            gravity: Vec2::new(0_f32, 9.8_f32 * px_to_meters as f32),
         }
     }
 

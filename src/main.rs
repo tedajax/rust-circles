@@ -8,6 +8,7 @@ use ajxmath::Vec2;
 
 mod ajxmath;
 mod physics;
+mod time;
 
 fn render_body(&body: &physics::Body, &ref renderer: &sdl2::render::Renderer) {
     let pos = body.position;
@@ -33,7 +34,7 @@ fn render_body(&body: &physics::Body, &ref renderer: &sdl2::render::Renderer) {
 pub fn main() {
     sdl2::init(sdl2::INIT_VIDEO);
 
-    let window = match sdl2::video::Window::new("rust-sdl2 demo: Video", sdl2::video::PosCentered, sdl2::video::PosCentered, 800, 600, sdl2::video::OPENGL) {
+    let window = match sdl2::video::Window::new("Circles", sdl2::video::PosCentered, sdl2::video::PosCentered, 800, 600, sdl2::video::OPENGL) {
         Ok(window) => window,
         Err(err) => panic!(format!("failed to create window: {}", err))
     };
@@ -47,6 +48,9 @@ pub fn main() {
     world.add_body(Vec2::new(200_f32, 100_f32), physics::Circle(32_f32), false);
     world.add_body(Vec2::new(300_f32, 400_f32), physics::Rectangle(100_f32, 50_f32), true);
     world.add_body(Vec2::new(400_f32, 300_f32), physics::Line(50_f32), true);
+
+    let mut time = time::Time::new();
+    let mut frames: int = 0;
 
     'main : loop {
         'event : loop {
@@ -62,14 +66,22 @@ pub fn main() {
             }
         }
 
+        time.update();
+
         let _ = renderer.set_draw_color(sdl2::pixels::RGB(32, 32, 32));
         let _ = renderer.clear();
 
         //let _ = renderer.circle(pos.x as i16, pos.y as i16, 25_i16, sdl2::pixels::RGB(255, 255, 0));
 
+        let dt = time.delta();
+        if (time.second_elapsed()) {
+            println!("fps: {}", frames);
+            frames = 0;
+        } else {
+            frames += 1;
+        }
 
-
-        world.update(0.0016667_f32);
+        world.update(dt);
 
         for body in world.objects.iter() {
             render_body(body, &renderer);
