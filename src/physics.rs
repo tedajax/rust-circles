@@ -180,18 +180,12 @@ impl World {
         let len = self.objects.len();
         for i in range(0, len - 1) {
             for j in range(i + 1, len) {
-                let obj_slices = self.objects.split_at_mut(j);
-                let mut o1;
-                let mut o2;
+                let (left, right) = self.objects.split_at_mut(j);
 
-                match obj_slices {
-                    (slice1, slice2) => {
-                        o1 = slice1[j - 1];
-                        o2 = slice2[0];
-                    }
-                }
-
-                if o1.collides(&o2) {
+                let mut o1 = &mut left[i];
+                let mut o2 = &mut right[0];
+                
+                if o1.collides(o2) {
                     let normal = (o2.position - o1.position).normalize();
 
                     println!("collide");
