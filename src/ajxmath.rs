@@ -49,6 +49,14 @@ impl Vec2 {
     pub fn angle(&self, _rhs: &Vec2) -> f32 {
         (self.dot(_rhs) / self.length() * _rhs.length()).acos()
     }
+
+    pub fn distance(v1: Vec2, v2: Vec2) -> f32 {
+        Vec2::distance_sqr(v1, v2).sqrt()
+    }
+
+    pub fn distance_sqr(v1: Vec2, v2: Vec2) -> f32 {
+        (v2.x - v1.x)*(v2.x - v1.x) + (v2.y - v1.y)*(v2.y - v1.y)
+    }
 }
 
 impl Add<Vec2, Vec2> for Vec2 {
@@ -134,8 +142,8 @@ impl Rect {
 
 #[deriving(Show, Clone, PartialEq)]
 pub struct Circle {
-    position: Vec2,
-    radius: f32
+    pub position: Vec2,
+    pub radius: f32
 }
 
 impl Circle {

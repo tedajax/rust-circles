@@ -4,7 +4,7 @@ extern crate native;
 
 use sdl2_gfx::primitives::DrawRenderer;
 
-use ajxmath::Vec2;
+use ajxmath::{Vec2, Circle, Rect};
 
 mod ajxmath;
 mod physics;
@@ -15,18 +15,23 @@ fn render_body(&body: &physics::Body, &ref renderer: &sdl2::render::Renderer) {
     let x = pos.x as i16;
     let y = pos.y as i16;
     match body.shape {
-        physics::Circle(radius) => {
-            let _ = renderer.circle(x, y, radius as i16, sdl2::pixels::RGB(255, 255, 0));
+        physics::ShapeCircle(c) => {
+            let cx = x + c.position.x as i16;
+            let cy = y + c.position.y as i16;
+            let radius = c.radius as i16;
+            let _ = renderer.circle(cx, cy, radius, sdl2::pixels::RGB(255, 255, 0));
         },
-        physics::Rectangle(width, height) => {
-            let w = width as i16;
-            let h = height as i16;
+        physics::ShapeRectangle(r) => {
+            let rx = x + r.position.x as i16;
+            let ry = y + r.position.y as i16;
+            let w = r.width as i16;
+            let h = r.height as i16;
             let _ = renderer.rectangle(x, y, x + w, y + h, sdl2::pixels::RGB(0, 255, 255));
         },
-        physics::Line(length) => {
-            let l = (length / 2_f32) as i16;
-            let _ = renderer.line(x - l, y, x + l, y, sdl2::pixels::RGB(255, 0, 255));
-        },
+        // physics::ShapeLine(length) => {
+        //     let l = (length / 2_f32) as i16;
+        //     let _ = renderer.line(x - l, y, x + l, y, sdl2::pixels::RGB(255, 0, 255));
+        // },
         _ => {}
     }
 }
@@ -54,9 +59,13 @@ pub fn main() {
     };
 
     let mut world = physics::World::new(64);
-    world.add_body(Vec2::new(200_f32, 100_f32), physics::Circle(32_f32), true);
-    world.add_body(Vec2::new(300_f32, 400_f32), physics::Rectangle(100_f32, 50_f32), true);
-    world.add_body(Vec2::new(400_f32, 550_f32), physics::Line(800_f32), true);
+    
+    for n in range(1, 3u) {
+        world.add_body(Vec2::new(50_f32 * n as f32, 100_f32), physics::ShapeCircle(Circle::new(Vec2::zero(), 16f32)), false);
+    }
+    
+    world.add_body(Vec2::new(300_f32, 400_f32), physics::ShapeRectangle(Rect::new(Vec2::zero(), 100f32, 50f32)), true);
+    // world.add_body(Vec2::new(400_f32, 550_f32), physics::ShapeLine(800_f32), true);
 
     let mut time = time::Time::new();
     let mut frames: int = 0;
