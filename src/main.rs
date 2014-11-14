@@ -34,6 +34,8 @@ fn render_body(&body: &physics::Body, &ref renderer: &sdl2::render::Renderer) {
         // },
         _ => {}
     }
+
+    renderer.circle(body.get_center().x as i16, body.get_center().y as i16, 1i16, sdl2::pixels::RGB(255, 0, 0));
 }
 
 fn render_rect(&rect: &ajxmath::Rect, &ref renderer: &sdl2::render::Renderer) {
@@ -60,8 +62,8 @@ pub fn main() {
 
     let mut world = physics::World::new(64);
     
-    for n in range(1, 3u) {
-        world.add_body(Vec2::new(50_f32 * n as f32, 100_f32), physics::ShapeCircle(Circle::new(Vec2::zero(), 16f32)), false);
+    for n in range(1, 20u) {
+        world.add_body(Vec2::new(33_f32 * n as f32, 100_f32), physics::ShapeCircle(Circle::new(Vec2::zero(), 16f32)), false);
     }
     
     world.add_body(Vec2::new(300_f32, 400_f32), physics::ShapeRectangle(Rect::new(Vec2::zero(), 100f32, 50f32)), true);

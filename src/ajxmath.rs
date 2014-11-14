@@ -26,6 +26,14 @@ impl Vec2 {
         Vec2 { x: 0_f32, y: 1_f32 }
     }
 
+    pub fn mag(&self) -> f32 {
+        self.length()
+    }
+
+    pub fn magSqr(&self) -> f32 {
+        self.length_sqr()
+    }
+
     pub fn length(&self) -> f32 {
         self.length_sqr().sqrt()
     }

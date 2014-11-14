@@ -25,11 +25,11 @@ impl Body {
         Body {
             id: id,
             position: pos,
-            velocity: Vec2::new(500f32, 0f32),
+            velocity: Vec2::new(100f32, 0f32),
             rotation: 0_f32,
             angular_velocity: 0_f32,
             mass: 1_f32,
-            friction: 0_f32,
+            friction: 0.1_f32,
             restitution: 0.75_f32,
             is_static: false,
             shape: None,
@@ -52,6 +52,19 @@ impl Body {
                 Rect::new(self.position + r.position, r.width, r.height)
             }
             _ => Rect::new(Vec2::zero(), 0_f32, 0_f32),
+        }
+    }
+
+    pub fn get_center(&self) -> Vec2 {
+        match self.shape {
+            ShapeCircle(c) => {
+                self.position + c.position
+            },
+            ShapeRectangle(r) => {
+                Vec2::new(self.position.x + r.position.x + r.width / 2f32,
+                          self.position.y + r.position.y + r.height / 2f32)
+            },
+            _ => Vec2::zero()
         }
     }
 
@@ -164,6 +177,7 @@ impl World {
             if (body.get_bounds().bottom() > 600_f32) {
                 body.position.y = 600_f32 - body.get_bounds().height / 2_f32;
                 body.velocity.y = -(body.velocity.y * body.restitution);
+                body.velocity.x = body.velocity.x * (1f32 - body.friction);
             }
 
             if (body.get_bounds().right() > 800_f32) {
@@ -186,10 +200,13 @@ impl World {
                 let mut o2 = &mut right[0];
                 
                 if o1.collides(o2) {
-                    let normal = (o2.position - o1.position).normalize();
+                    let normal = -(o2.get_center() - o1.get_center()).normalize();
 
-                    println!("collide");
-                    o1.velocity.x = 0f32;
+                    let s1 = o1.velocity.mag();
+                    let s2 = o2.velocity.mag();
+
+                    o1.velocity = normal * s1 * o1.restitution;
+                    o2.velocity = -normal * s2 * o2.restitution;
                 }
             }
         }
